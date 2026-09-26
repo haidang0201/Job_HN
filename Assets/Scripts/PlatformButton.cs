@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class PlatformButton : MonoBehaviour, IInteractable
 {
-    [SerializeField] private PlatformController platformController;
+    [SerializeField]
+    private PlatformController platformController;
+
 
     public void Interact()
     {
-        if (platformController == null)
-            return;
-
-        // Mở platform
         platformController.OpenPlatforms();
 
-        // Ẩn Button 3D
+        // Ẩn Button3D sau khi đã sử dụng
         gameObject.SetActive(false);
     }
 }

@@ -3,8 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneReset : MonoBehaviour
 {
-    public void ResetScene()
+    public void Restart()
     {
-        SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().buildIndex
+        );
     }
 }

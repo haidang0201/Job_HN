@@ -172,4 +172,11 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Death"))
+        {
+            animator.SetTrigger("Death");
+        }
+    }
 }

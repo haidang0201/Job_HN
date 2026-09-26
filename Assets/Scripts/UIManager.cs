@@ -1,30 +1,40 @@
 using UnityEngine;
 
-
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [SerializeField] GameObject doorIcon;
+    [SerializeField] GameObject platformIcon;
 
-    public GameObject interactIcon;
 
-
-    void Awake()
+    private void Awake()
     {
         Instance = this;
 
-        interactIcon.SetActive(false);
+        HideAll();
     }
 
 
-    public void ShowInteract()
+    public void ShowDoorIcon()
     {
-        interactIcon.SetActive(true);
+        HideAll();
+
+        doorIcon.SetActive(true);
     }
 
 
-    public void HideInteract()
+    public void ShowPlatformIcon()
     {
-        interactIcon.SetActive(false);
+        HideAll();
+
+        platformIcon.SetActive(true);
+    }
+
+
+    public void HideAll()
+    {
+        doorIcon.SetActive(false);
+        platformIcon.SetActive(false);
     }
 }

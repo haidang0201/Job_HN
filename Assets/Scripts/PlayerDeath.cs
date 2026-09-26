@@ -1,11 +1,13 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerDeath : MonoBehaviour
 {
+    [SerializeField] private GameObject deathPanel;
+
     private Animator animator;
     private PlayerMovement movement;
-
-    [SerializeField] private DeathUI deathUI;
+    private Rigidbody rb;
 
     private bool isDead;
 
@@ -14,24 +16,9 @@ public class PlayerDeath : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         movement = GetComponent<PlayerMovement>();
-    }
+        rb = GetComponent<Rigidbody>();
 
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Death"))
-        {
-            Die();
-        }
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Death"))
-        {
-            Die();
-        }
+        deathPanel.SetActive(false);
     }
 
 
@@ -42,16 +29,46 @@ public class PlayerDeath : MonoBehaviour
 
         isDead = true;
 
-        // Dừng Player
+        // Khóa di chuyển
         if (movement != null)
-        {
             movement.enabled = false;
+
+        // Dừng Rigidbody
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
         }
 
-        // Death animation
+        // Chạy animation chết
         animator.SetTrigger("Death");
 
-        // Hiện UI chết
-        deathUI.Show();
+        // Chờ Death animation chạy xong
+        StartCoroutine(DeathSequence());
+    }
+
+
+    private IEnumerator DeathSequence()
+    {
+        // Chờ vào state Death
+        yield return null;
+
+        while (!animator.GetCurrentAnimatorStateInfo(0)
+            .IsName("Death"))
+        {
+            yield return null;
+        }
+
+        // Chờ animation Death chạy xong
+        while (animator.GetCurrentAnimatorStateInfo(0)
+            .normalizedTime < 1f)
+        {
+            yield return null;
+        }
+
+        // Hiện màn hình Restart
+        deathPanel.SetActive(true);
+
+        // Đóng băng game
+        Time.timeScale = 0f;
     }
 }

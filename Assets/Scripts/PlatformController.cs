@@ -7,6 +7,12 @@ public class PlatformController : MonoBehaviour
     private bool isOpened;
 
 
+    private void Awake()
+    {
+        SetPlatforms(false);
+    }
+
+
     public void OpenPlatforms()
     {
         if (isOpened)
@@ -14,9 +20,18 @@ public class PlatformController : MonoBehaviour
 
         isOpened = true;
 
+        SetPlatforms(true);
+    }
+
+
+    private void SetPlatforms(bool active)
+    {
         foreach (GameObject platform in platforms)
         {
-            platform.SetActive(true);
+            if (platform != null)
+            {
+                platform.SetActive(active);
+            }
         }
     }
 }
